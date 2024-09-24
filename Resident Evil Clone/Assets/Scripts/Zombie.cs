@@ -9,9 +9,9 @@ public class Zombie : MonoBehaviour
     [SerializeField] private Transform target; //Player transform
     [SerializeField] private float moveSpeed = 5;
     [SerializeField] private NavMeshAgent agent;
-    [SerializeField] private int maxHealth = 5;
+    [SerializeField] private float maxHealth = 5;
 
-    private int currentHealth;
+    private float currentHealth;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,8 +19,6 @@ public class Zombie : MonoBehaviour
         target = GameObject.Find("Player").transform;
         currentHealth = maxHealth;
         agent.speed = moveSpeed;   
-
-        Debug.Log("Current starting health = " + currentHealth);
     }
 
     // Update is called once per frame
@@ -29,9 +27,8 @@ public class Zombie : MonoBehaviour
         agent.SetDestination(target.position);
     }
 
-    public void TakeDamage(int damage){
+    public void TakeDamage(float damage){
         currentHealth -= damage;
-        Debug.Log(currentHealth);
         if(currentHealth <= 0){
             Destroy(gameObject);
         }
