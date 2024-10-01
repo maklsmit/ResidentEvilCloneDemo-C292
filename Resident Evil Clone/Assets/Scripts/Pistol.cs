@@ -7,8 +7,6 @@ public class Pistol : Weapon
     // Start is called before the first frame update
     void Start()
     {
-        ammoCapacity = 10;
-        currentAmmo = ammoCapacity;
         canFire = true;
     }
 
@@ -19,9 +17,14 @@ public class Pistol : Weapon
     }
 
     protected override void Fire(){
-        if(currentAmmo > 0 && canFire){
+        if(currentMag == null){
+            Debug.Log("No mag");
+            return;
+        }
+
+        if(currentMag.AmmoCount > 0 && canFire){
             Debug.Log("Pistol Fired");
-            currentAmmo--;
+            currentMag.AmmoCount--;
 
             RaycastHit hit;
         
@@ -32,7 +35,7 @@ public class Pistol : Weapon
                 }
             }
         }
-        if(currentAmmo <= 0){
+        if(currentMag.AmmoCount <= 0){
             Debug.Log("Out of ammo");
         }
         if(!canFire){
@@ -52,6 +55,6 @@ public class Pistol : Weapon
 
         Debug.Log("Reloading Complete");
         canFire = true;
-        currentAmmo = ammoCapacity;
+        currentMag.Reload();
     }
 }

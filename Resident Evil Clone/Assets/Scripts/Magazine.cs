@@ -5,21 +5,34 @@ using UnityEngine;
 public class Magazine : MonoBehaviour, IPickupable
 {
     
-    [SerializeField] private GameObject magPrefab;
     [SerializeField] private int ammoCount;
+    [SerializeField] private int reloadAmount;
     [SerializeField] private int ammoCapacity;
     [SerializeField] private string magType;
 
     public int AmmoCount {get => ammoCount; set => ammoCount = value;}
     public int AmmoCapacity {get => ammoCapacity; set => ammoCapacity = value;}
     public string MagType {get => magType; set => magType = value;}
-    
-    public void OnDrop(){
-        GameObject mag = Instantiate(magPrefab, transform.position, transform.rotation);
+    public int ReloadAmount {get => reloadAmount; set => reloadAmount = value;}
+
+
+    public void OnDrop(Transform positionT){
+        gameObject.SetActive(true);
+        gameObject.transform.position = positionT.position;
+        gameObject.transform.parent = null;
     }
 
     public void OnPickup(PlayerController player){
-        player.CurrentMag = Instantiate(this);
-        Destroy(gameObject);
+        player.CurrentMag = this;
+        gameObject.SetActive(false);
+        gameObject.transform.parent = player.transform;
+    }
+
+    public void Reload(){
+        if(ammoCapacity > 0){
+            ammoCount = reloadAmount;
+            ammoCapacity -= reloadAmount;
+        }
+        
     }
 }

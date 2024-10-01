@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] Weapon weapon;
+    [SerializeField] Transform dropPoint;
     [SerializeField] float moveSpeed = 5f;
     [SerializeField] float jumpForce = 5f;
     [SerializeField] float mouseSensitivity = 5f;
@@ -43,15 +45,18 @@ public class PlayerController : MonoBehaviour
 
             Debug.DrawRay(fpsCamera.position, fpsCamera.forward * distance, Color.red, 5f);
             if(Physics.Raycast(fpsCamera.position, fpsCamera.forward, out RaycastHit hit, distance)){
-                if(hit.transform.gameObject != null){
-                    Debug.Log(hit.transform.gameObject.name);
-                }
+                
                 if(hit.transform.TryGetComponent(out Magazine magazine)){
                     Debug.Log("Magazine");
                     magazine.OnPickup(this);
                     Debug.Log(currentMag);
+                    weapon.CurrentMag = currentMag;
                 }
             }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Q)){
+            currentMag.OnDrop(dropPoint);
         }
     }
 
